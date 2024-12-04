@@ -2,8 +2,10 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
@@ -59,7 +61,13 @@ type MyHandlers struct {
 }
 
 func buildHandlers() (*MyHandlers, error) {
-	db, err := sqlx.Open("mysql", "user:password@tcp(local_db)/paper-news_local?parseTime=true")
+	DBMS := "mysql"
+	DB_USER := os.Getenv("DB_USER")
+	DB_PASS := os.Getenv("DB_PASS")
+	DB_HOST := os.Getenv("DB_HOST")
+	DB_NAME := os.Getenv("DB_NAME")
+
+	db, err := sqlx.Open(DBMS, fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", DB_USER, DB_PASS, DB_HOST, DB_NAME))
 	if err != nil {
 		return nil, err
 	}

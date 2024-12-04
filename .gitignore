@@ -1,4 +1,5 @@
 db-store
 .aws-sam
 out.txt
-*ignore/
+*ignored/
+env.json
