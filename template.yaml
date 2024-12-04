@@ -1,0 +1,56 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  paper-news-backend-v2
+
+  Sample SAM Template for paper-news-backend-v2
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 128
+
+    # You can add LoggingConfig parameters such as the Logformat, Log Group, and SystemLogLevel or ApplicationLogLevel. Learn more here https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html#sam-function-loggingconfig.
+    LoggingConfig:
+      LogFormat: JSON
+Resources:
+  GinFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      Architectures:
+      - arm64 # or x86_64
+      Events:
+        ApiGateway:
+          Type: HttpApi
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+
+    Metadata:
+      DockerTag: provided.al2-v1
+      DockerContext: ./gin-lambda
+      Dockerfile: Dockerfile
+
+  GinApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: GinApi
+      StageName: prod
+      DefinitionBody:
+        swagger: "2.0"
+        info:
+          title: "Gin API"
+          version: "1.0"
+        paths:
+          "/greet":
+            get:
+              operationId: "getHello"
+          "/papers":
+            get:
+              operationId: "getPapers"
+          "/papers/reflesh":
+            post:
+              operationId: "refleshPapers"
+

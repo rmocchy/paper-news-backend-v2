@@ -1,0 +1,24 @@
+version: '3'
+services:
+  db:
+    image: mysql:8.0.32
+    container_name: local_db
+    platform: linux/arm64/v8 
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: paper-news_local
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    command: mysqld
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db-store:/var/lib/mysql
+      - ./db/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/seeds:/seeds
+    networks:
+      - lambda-local
+networks:
+  lambda-local:
+    external: true
