@@ -17,6 +17,7 @@ This is a sample template for paper-news-backend-v2 - Below is a brief explanati
 │   ├── init.sql
 │   ├── my.cnf
 │   └── dbconfig.yml            <-- Config for migration tool
+├── env.example.json            <-- Template of env file
 ├── Makefile
 ├── docker-compose.yml          <-- For debug on local
 └── template.yaml
@@ -85,6 +86,11 @@ Read more about [SAM Build here](https://docs.aws.amazon.com/serverless-applicat
 
 ### Local development
 
+**Set environment from example**
+```bash
+make init
+```
+
 **Starting Database**
 ```bash
 docker network create -d lambda-local
@@ -95,7 +101,7 @@ docker compose up -d db --build
 **Invoking function locally through local API Gateway**
 
 ```bash
-sam local start-api --docker-network lambda-local
+sam local start-api --docker-network lambda-local --env-vars env.json
 ```
 
 If the previous command ran successfully you should now be able to hit the following local endpoint to invoke your function `http://localhost:3000/greet`
