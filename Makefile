@@ -1,3 +1,7 @@
+.PHONY: init
+init:
+	cp env.example.json env.json
+
 .PHONY: install-tools
 install-tools:
 	cd gin-lambda && \

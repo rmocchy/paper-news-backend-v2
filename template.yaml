@@ -27,6 +27,12 @@ Resources:
           Properties:
             Path: /{proxy+}
             Method: ANY
+      Environment:
+        Variables:
+          DB_HOST:
+          DB_NAME:
+          DB_USER:
+          DB_PASS:
 
     Metadata:
       DockerTag: provided.al2-v1
