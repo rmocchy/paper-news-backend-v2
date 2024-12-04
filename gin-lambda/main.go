@@ -38,8 +38,7 @@ func Handler(ctx context.Context, req events.APIGatewayV2HTTPRequest) (events.AP
 		r.GET("/papers", hs.paperController.ListPapers)
 		r.POST("/papers/reflesh", hs.paperController.RefleshPapers)
 		r.NoRoute(func(c *gin.Context) {
-			path := c.Request.URL.Path
-			c.JSON(http.StatusNotFound, gin.H{"message": "Not Method Found at " + path + "req was " + req.RawPath})
+			c.JSON(http.StatusNotFound, gin.H{"message": "No Path Found"})
 		})
 
 		ginLambda = ginadapter.NewV2(r)
