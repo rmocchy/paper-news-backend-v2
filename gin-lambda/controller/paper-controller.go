@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	paperservice "github.com/rmocchy/paper-news-backend-v2/gin-lambda/service/paper-service"
@@ -51,11 +52,11 @@ func (p *paperController) RefleshPapers(c *gin.Context) {
 	})
 	if err != nil {
 		log.Println("error at RefleshPapers: %w", err.Error())
-		c.JSON(500, gin.H{"message": fmt.Sprintln("RefleshFailed: %w", err.Error())})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": fmt.Sprintln("RefleshFailed: %w", err.Error())})
 		return
 	}
 
-	c.JSON(200, gin.H{"message": fmt.Sprint("RefleshSuccess: refleshed newest %d papers", res.RefleshedPaperSize)})
+	c.JSON(http.StatusOK, gin.H{"message": fmt.Sprint("RefleshSuccess: refleshed newest %d papers", res.RefleshedPaperSize)})
 }
 
 func (p *paperController) ListPapers(c *gin.Context) {
@@ -63,8 +64,8 @@ func (p *paperController) ListPapers(c *gin.Context) {
 
 	result, err := p.listPaperService.ListPapers(c, &paperservice.ListPapersInput{})
 	if err != nil {
-		c.JSON(500, gin.H{"message": fmt.Sprintln("ListFailed: %w", err.Error())})
+		c.JSON(http.StatusInternalServerError, gin.H{"message": fmt.Sprintln("ListFailed: %w", err.Error())})
 		return
 	}
-	c.JSON(200, gin.H{"message": "ListSuccess", "result": result.Papers})
+	c.JSON(http.StatusOK, gin.H{"message": "ListSuccess", "result": result.Papers})
 }
