@@ -31,6 +31,51 @@ This is a sample template for paper-news-backend-v2 - Below is a brief explanati
 You may need the following for local testing.
 * [Golang](https://golang.org)
 
+## APIs
+### GET /greet
+```
+$ curl -X GET http://127.0.0.1:3000/greet
+
+{"message":"Hello World"}
+```
+
+### GET /papers
+```
+$ curl -X GET http://127.0.0.1:3000/papers 
+
+{
+  "message":"ListSuccess",
+  "result":[
+    {
+      "id": 1,
+      "article_id": "http://arxiv.org/abs/XXX",
+      "title": "hogehoge",
+      "abstract": "piyppiyo",
+      "abstract_jp": "" (emtpy now),
+      "created_at": {
+        "Time": "2024-12-04T04:27:37Z",
+        "Valid":true
+      },
+      "updated_at": {
+        "Time": "2024-12-04T04:27:37Z",
+        "Valid":true
+      }
+    },
+    ...
+  ]
+}
+```
+
+### POST /papers/reflesh
+```
+$ curl -X POST -H "Content-Type: application/json" -d '{"max_size":30}' http://127.0.0.1:3000/papers/reflesh
+
+{
+  "message":"RefleshSuccess: refleshed newest 30 papers"
+}
+```
+
+
 ## Setup process
 
 ### Installing dependencies & building the target 
